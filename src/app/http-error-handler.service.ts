@@ -9,7 +9,7 @@ import { ErrorDialogComponent } from './error-dialog/error-dialog.component';
 
 /** Type of the handleError function returned by HttpErrorHandler.createHandleError */
 export type HandleError =
-    <T> (operation?: string, result?: T) => (error: HttpErrorResponse) => Observable<T>;
+    <T> (operation?: string, result?: T) => (error: HttpErrorResponse) => void;
 
 /** Handles HttpClient errors */
 @Injectable({
