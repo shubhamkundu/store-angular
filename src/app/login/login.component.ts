@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { LoginData, LoginResponse } from '../auth/auth.interface';
 import { AuthService } from '../auth/auth.service';
+import { emailValidator } from '../shared/validators/invalid-email.directive';
+import { passwordValidator } from '../shared/validators/invalid-password.directive';
 import { StoreService } from '../store.service';
 
 @Component({
@@ -24,11 +26,15 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.form = new FormGroup({
-      email: new FormControl('', [Validators.required, this.emailValidator()]),
+      email: new FormControl('', [
+        Validators.required,
+        emailValidator(this.storeService)
+      ]),
       password: new FormControl('', [
         Validators.required,
         Validators.minLength(this.PASSWORD_MIN_LENGTH),
-        this.passwordValidator()])
+        passwordValidator(this.storeService)
+      ])
     });
   }
 
@@ -47,22 +53,10 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   handleLoginSuccess(loginRes: LoginResponse): void {
-    sessionStorage.setItem('token', loginRes.token);
-    this.router.navigate(['home']);
-  }
-
-  emailValidator(): ValidatorFn {
-    return (control: AbstractControl): ValidationErrors | null => {
-      const valid = this.storeService.validateEmail(control.value);
-      return valid ? null : { invalidEmail: { value: control.value } };
-    };
-  }
-
-  passwordValidator(): ValidatorFn {
-    return (control: AbstractControl): ValidationErrors | null => {
-      const valid = this.storeService.validatePassword(control.value);
-      return valid ? null : { invalidPassword: { value: control.value } };
-    };
+    if (loginRes) {
+      sessionStorage.setItem('token', loginRes.token);
+      this.router.navigate(['home']);
+    }
   }
 
   ngOnDestroy() {

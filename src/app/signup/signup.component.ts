@@ -64,7 +64,9 @@ export class SignupComponent implements OnInit, OnDestroy {
   }
 
   handleSignupSuccess(user: User): void {
-    this.router.navigate(['login']);
+    if (user) {
+      this.router.navigate(['login']);
+    }
   }
 
   matchPassword(): boolean {

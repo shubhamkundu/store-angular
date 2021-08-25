@@ -9,7 +9,7 @@ import { ErrorDialogComponent } from './error-dialog/error-dialog.component';
 
 /** Type of the handleError function returned by HttpErrorHandler.createHandleError */
 export type HandleError =
-    <T> (operation?: string, result?: T) => (error: HttpErrorResponse) => void;
+    <T> (operation?: string, result?: T) => (error: HttpErrorResponse) => Observable<T>;
 
 /** Handles HttpClient errors */
 @Injectable({
@@ -36,7 +36,7 @@ export class HttpErrorHandler {
      */
     handleError<T>(serviceName = '', operation = 'operation', result = {} as T) {
 
-        return (error: HttpErrorResponse): void => {
+        return (error: HttpErrorResponse): Observable<T> => {
             // TODO: send the error to remote logging infrastructure
             console.error(error); // log to console instead
 
@@ -52,7 +52,7 @@ export class HttpErrorHandler {
             });
 
             // Let the app keep running by returning a safe result.
-            // return of(result);
+            return of(result);
         };
 
     }

@@ -56,14 +56,14 @@ export class AuthService {
     signup(signupData: SignupData): Observable<User> {
         return this.http.post<User>(`${this.msURL}/auth/`, signupData, skipAuthHttpOptions)
             .pipe(
-                catchError(this.handleError('signup', {} as User))
+                catchError(this.handleError('signup', null as User))
             );
     }
 
     login(loginData: LoginData): Observable<LoginResponse> {
         return this.http.post<LoginResponse>(`${this.msURL}/auth/login`, loginData, skipAuthHttpOptions)
             .pipe(
-                catchError(this.handleError('login', {} as LoginResponse))
+                catchError(this.handleError('login', null as LoginResponse))
             );
     }
 
