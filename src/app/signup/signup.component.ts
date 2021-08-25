@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { SignupData, User } from '../auth/auth.interface';
 import { AuthService } from '../auth/auth.service';
 import { emailValidator } from '../shared/validators/invalid-email.directive';
@@ -13,10 +14,11 @@ import { StoreService } from '../store.service';
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.css']
 })
-export class SignupComponent implements OnInit {
+export class SignupComponent implements OnInit, OnDestroy {
   NAME_MIN_LENGTH = 3;
   PASSWORD_MIN_LENGTH = 8;
   form: FormGroup;
+  signupSubscription: Subscription;
 
   constructor(
     private authService: AuthService,
@@ -54,7 +56,7 @@ export class SignupComponent implements OnInit {
         password: this.form.controls.password.value,
         confirmPassword: this.form.controls.confirmPassword.value
       };
-      this.authService.signup(signupData)
+      this.signupSubscription = this.authService.signup(signupData)
         .subscribe((user: User) => {
           this.handleSignupSuccess(user);
         });
@@ -67,5 +69,9 @@ export class SignupComponent implements OnInit {
 
   matchPassword(): boolean {
     return this.form.controls['password'].value === this.form.controls['confirmPassword'].value;
+  }
+
+  ngOnDestroy() {
+    this.signupSubscription.unsubscribe();
   }
 }

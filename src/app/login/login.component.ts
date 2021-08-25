@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { LoginData, LoginResponse } from '../auth/auth.interface';
 import { AuthService } from '../auth/auth.service';
 import { StoreService } from '../store.service';
@@ -10,9 +11,10 @@ import { StoreService } from '../store.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
   PASSWORD_MIN_LENGTH = 8;
   form: FormGroup;
+  loginSubscription: Subscription;
 
   constructor(
     private authService: AuthService,
@@ -37,7 +39,7 @@ export class LoginComponent implements OnInit {
         email: this.form.controls.email.value.trim(),
         password: this.form.controls.password.value
       };
-      this.authService.login(loginData)
+      this.loginSubscription = this.authService.login(loginData)
         .subscribe((loginRes: LoginResponse) => {
           this.handleLoginSuccess(loginRes);
         });
@@ -61,5 +63,9 @@ export class LoginComponent implements OnInit {
       const valid = this.storeService.validatePassword(control.value);
       return valid ? null : { invalidPassword: { value: control.value } };
     };
+  }
+
+  ngOnDestroy() {
+    this.loginSubscription.unsubscribe();
   }
 }
