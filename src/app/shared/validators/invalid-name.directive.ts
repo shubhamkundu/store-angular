@@ -1,10 +1,10 @@
 import { Directive, Input } from '@angular/core';
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
-import { StoreService } from 'src/app/store.service';
+import { AppService } from 'src/app/app.service';
 
-export function nameValidator(storeService: StoreService): ValidatorFn {
+export function nameValidator(appService: AppService): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
-    const valid = storeService.validateName(control.value);
+    const valid = appService.validateName(control.value);
     return valid ? null : { invalidName: { value: control.value } };
   };
 }
@@ -15,9 +15,9 @@ export function nameValidator(storeService: StoreService): ValidatorFn {
 export class InvalidNameDirective {
   @Input('storeInvalidName') invalidName = '';
 
-  constructor(private storeService: StoreService) { }
+  constructor(private appService: AppService) { }
 
   validate(control: AbstractControl): ValidationErrors | null {
-    return this.invalidName ? nameValidator(this.storeService)(control) : null;
+    return this.invalidName ? nameValidator(this.appService)(control) : null;
   }
 }

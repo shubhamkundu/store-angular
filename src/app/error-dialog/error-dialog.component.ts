@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
-export interface ErrorDialogData {
+export interface IErrorDialogData {
   errorMessage: string;
 }
 
@@ -12,7 +12,7 @@ export interface ErrorDialogData {
 })
 export class ErrorDialogComponent implements OnInit {
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: ErrorDialogData) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: IErrorDialogData) { }
 
   ngOnInit(): void {
   }

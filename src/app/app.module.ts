@@ -9,17 +9,26 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { MatSelectModule } from '@angular/material/select';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatGridListModule } from '@angular/material/grid-list';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HeaderComponent } from './header/header.component';
 import { SignupComponent } from './signup/signup.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FooterComponent } from './footer/footer.component';
 import { LogoutComponent } from './logout/logout.component';
 import { ErrorDialogComponent } from './error-dialog/error-dialog.component';
 import { InvalidEmailDirective } from './shared/validators/invalid-email.directive';
 import { InvalidNameDirective } from './shared/validators/invalid-name.directive';
 import { InvalidPasswordDirective } from './shared/validators/invalid-password.directive';
+import { StoreComponent } from './store/store.component';
+import { AuthInterceptor } from './auth-interceptor';
+import { StoreDialogComponent } from './store-dialog/store-dialog.component';
+import { ProductDialogComponent } from './product-dialog/product-dialog.component';
+import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
+import { SuccessDialogComponent } from './success-dialog/success-dialog.component';
+import { AllStoresComponent } from './all-stores/all-stores.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +42,13 @@ import { InvalidPasswordDirective } from './shared/validators/invalid-password.d
     ErrorDialogComponent,
     InvalidEmailDirective,
     InvalidNameDirective,
-    InvalidPasswordDirective
+    InvalidPasswordDirective,
+    StoreComponent,
+    StoreDialogComponent,
+    ProductDialogComponent,
+    DeleteDialogComponent,
+    SuccessDialogComponent,
+    AllStoresComponent
   ],
   imports: [
     BrowserModule,
@@ -42,12 +57,16 @@ import { InvalidPasswordDirective } from './shared/validators/invalid-password.d
     MatCardModule,
     MatInputModule,
     MatButtonModule,
+    MatSelectModule,
     MatDialogModule,
+    MatGridListModule,
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

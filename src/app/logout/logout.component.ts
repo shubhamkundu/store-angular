@@ -16,7 +16,7 @@ export class LogoutComponent implements OnInit {
     setTimeout(() => {
       this.authService.logout();
       this.loggedOut = true;
-    }, 3000);
+    }, 1000);
   }
 
 }

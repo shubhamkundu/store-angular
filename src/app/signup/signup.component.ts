@@ -2,12 +2,12 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { SignupData, User } from '../auth/auth.interface';
+import { ISignupData, IUser } from '../auth/auth.interfaces';
 import { AuthService } from '../auth/auth.service';
 import { emailValidator } from '../shared/validators/invalid-email.directive';
 import { nameValidator } from '../shared/validators/invalid-name.directive';
 import { passwordValidator } from '../shared/validators/invalid-password.directive';
-import { StoreService } from '../store.service';
+import { AppService } from '../app.service';
 
 @Component({
   selector: 'store-signup',
@@ -22,7 +22,7 @@ export class SignupComponent implements OnInit, OnDestroy {
 
   constructor(
     private authService: AuthService,
-    private storeService: StoreService,
+    private appService: AppService,
     private router: Router
   ) { }
 
@@ -31,15 +31,15 @@ export class SignupComponent implements OnInit, OnDestroy {
       name: new FormControl('', [
         Validators.required,
         Validators.minLength(this.NAME_MIN_LENGTH),
-        nameValidator(this.storeService)
+        nameValidator(this.appService)
       ]),
       email: new FormControl('', [
         Validators.required,
-        emailValidator(this.storeService)]),
+        emailValidator(this.appService)]),
       password: new FormControl('', [
         Validators.required,
         Validators.minLength(this.PASSWORD_MIN_LENGTH),
-        passwordValidator(this.storeService)
+        passwordValidator(this.appService)
       ]),
       confirmPassword: new FormControl('', [
         Validators.required
@@ -49,7 +49,7 @@ export class SignupComponent implements OnInit, OnDestroy {
 
   submit(): void {
     if (this.form.valid) {
-      let signupData: SignupData;
+      let signupData: ISignupData;
       signupData = {
         name: this.form.controls.name.value.trim(),
         email: this.form.controls.email.value.trim(),
@@ -57,13 +57,13 @@ export class SignupComponent implements OnInit, OnDestroy {
         confirmPassword: this.form.controls.confirmPassword.value
       };
       this.signupSubscription = this.authService.signup(signupData)
-        .subscribe((user: User) => {
+        .subscribe((user: IUser) => {
           this.handleSignupSuccess(user);
         });
     }
   }
 
-  handleSignupSuccess(user: User): void {
+  handleSignupSuccess(user: IUser): void {
     if (user) {
       this.router.navigate(['login']);
     }

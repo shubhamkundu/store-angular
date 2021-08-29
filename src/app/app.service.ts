@@ -8,7 +8,7 @@ import { HttpErrorHandler, HandleError } from './http-error-handler.service';
 @Injectable({
   providedIn: 'root'
 })
-export class StoreService {
+export class AppService {
   msURL = environment.msURL;
   private handleError: HandleError;
 
@@ -16,7 +16,7 @@ export class StoreService {
     private http: HttpClient,
     httpErrorHandler: HttpErrorHandler
   ) {
-    this.handleError = httpErrorHandler.createHandleError('StoreService');
+    this.handleError = httpErrorHandler.createHandleError('AppService');
   }
 
   validateEmail(email: string): boolean {

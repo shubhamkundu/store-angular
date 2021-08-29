@@ -1,10 +1,10 @@
 import { Directive, Input } from '@angular/core';
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
-import { StoreService } from 'src/app/store.service';
+import { AppService } from 'src/app/app.service';
 
-export function emailValidator(storeService: StoreService): ValidatorFn {
+export function emailValidator(appService: AppService): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
-    const valid = storeService.validateEmail(control.value);
+    const valid = appService.validateEmail(control.value);
     return valid ? null : { invalidEmail: { value: control.value } };
   };
 }
@@ -15,9 +15,9 @@ export function emailValidator(storeService: StoreService): ValidatorFn {
 export class InvalidEmailDirective {
   @Input('storeInvalidEmail') invalidEmail = '';
 
-  constructor(private storeService: StoreService) { }
+  constructor(private appService: AppService) { }
 
   validate(control: AbstractControl): ValidationErrors | null {
-    return this.invalidEmail ? emailValidator(this.storeService)(control) : null;
+    return this.invalidEmail ? emailValidator(this.appService)(control) : null;
   }
 }

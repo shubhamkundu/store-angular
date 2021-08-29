@@ -1,12 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { LoginData, LoginResponse } from '../auth/auth.interface';
+import { ILoginData, ILoginResponse } from '../auth/auth.interfaces';
 import { AuthService } from '../auth/auth.service';
 import { emailValidator } from '../shared/validators/invalid-email.directive';
-import { passwordValidator } from '../shared/validators/invalid-password.directive';
-import { StoreService } from '../store.service';
+import { AppService } from '../app.service';
 
 @Component({
   selector: 'store-login',
@@ -20,7 +19,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   constructor(
     private authService: AuthService,
-    private storeService: StoreService,
+    private appService: AppService,
     private router: Router
   ) { }
 
@@ -28,33 +27,32 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.form = new FormGroup({
       email: new FormControl('', [
         Validators.required,
-        emailValidator(this.storeService)
+        emailValidator(this.appService)
       ]),
       password: new FormControl('', [
-        Validators.required,
-        Validators.minLength(this.PASSWORD_MIN_LENGTH),
-        passwordValidator(this.storeService)
+        Validators.required
       ])
     });
   }
 
   submit(): void {
     if (this.form.valid) {
-      let loginData: LoginData;
+      let loginData: ILoginData;
       loginData = {
         email: this.form.controls.email.value.trim(),
         password: this.form.controls.password.value
       };
       this.loginSubscription = this.authService.login(loginData)
-        .subscribe((loginRes: LoginResponse) => {
+        .subscribe((loginRes: ILoginResponse) => {
           this.handleLoginSuccess(loginRes);
         });
     }
   }
 
-  handleLoginSuccess(loginRes: LoginResponse): void {
+  handleLoginSuccess(loginRes: ILoginResponse): void {
     if (loginRes) {
       sessionStorage.setItem('token', loginRes.token);
+      this.authService.resetLoggedInUser();
       this.router.navigate(['home']);
     }
   }

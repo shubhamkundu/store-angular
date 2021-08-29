@@ -4,18 +4,19 @@ import { Subscription } from 'rxjs';
 import { IUser } from '../auth/auth.interfaces';
 import { AuthService } from '../auth/auth.service';
 import { DeleteDialogComponent, IDeleteDialogData } from '../delete-dialog/delete-dialog.component';
-import { IStoreDialogData, StoreDialogComponent } from '../store-dialog/store-dialog.component';
-import { IStore } from '../store/store.interfaces';
+import { IProductDialogData, ProductDialogComponent } from '../product-dialog/product-dialog.component';
+import { IProduct, IStore } from '../store/store.interfaces';
 import { StoreService } from '../store/store.service';
 
 @Component({
-  selector: 'store-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  selector: 'store-all-stores',
+  templateUrl: './all-stores.component.html',
+  styleUrls: ['./all-stores.component.css']
 })
-export class HomeComponent implements OnInit {
+export class AllStoresComponent implements OnInit {
   loggedInUser: IUser;
   store: IStore;
+  products: IProduct[];
   subscriptions: Subscription[];
 
   constructor(
@@ -24,87 +25,93 @@ export class HomeComponent implements OnInit {
     public dialog: MatDialog
   ) { }
 
-  ngOnInit() {
-    this.loggedInUser = this.authService.getLoggedInUser();
+  ngOnInit(): void {
     this.loggedInUser = this.authService.getLoggedInUser();
     this.subscriptions = [];
-    this.getStoreByStoreOwner();
+    this.products = [];
   }
 
-  getStoreByStoreOwner() {
-    const sub: Subscription = this.storeService.getStoreByStoreOwner()
-      .subscribe((store: IStore) => {
-        if (store) {
-          this.store = store;
+  handleStoreRes(store) {
+    if (store) {
+      this.store = store;
+      this.getProducts();
+    }
+  }
+
+  getProducts() {
+    const sub: Subscription = this.storeService.getProductsByStoreId(this.store.storeId)
+      .subscribe((products: IProduct[]) => {
+        if (products) {
+          this.products = products;
         }
       });
     this.subscriptions.push(sub);
   }
 
-  openStoreDialog(dialogType) {
+  openProductDialog(dialogType, product?: IProduct) {
     const dialogConfig: MatDialogConfig = {
       width: '500px'
     };
-    const data: IStoreDialogData = { dialogType };
+    const data: IProductDialogData = { dialogType, store: this.store };
     dialogConfig.data = data;
     if (dialogType === 'Edit') {
-      dialogConfig.data.store = this.store;
+      dialogConfig.data.product = product;
     }
-    const dialogRef = this.dialog.open(StoreDialogComponent, dialogConfig);
+    const dialogRef = this.dialog.open(ProductDialogComponent, dialogConfig);
 
     dialogRef.beforeClosed()
-      .subscribe((storeData: IStore) => {
-        if (storeData) {
+      .subscribe((productData: IProduct) => {
+        if (productData) {
           if (dialogType === 'Create') {
-            this.createStore(storeData);
+            this.createProduct(productData);
           } else if (dialogType === 'Edit') {
-            this.editStore(storeData);
+            this.editProduct(productData);
           }
         }
       });
   }
 
-  openDeleteDialog() {
+  openDeleteDialog(product: IProduct) {
     const dialogConfig: MatDialogConfig = {};
     const data: IDeleteDialogData = {
-      deleteSubject: this.store.name
+      deleteSubject: product.name
     };
     dialogConfig.data = data;
     const dialogRef = this.dialog.open(DeleteDialogComponent, dialogConfig);
 
     dialogRef.beforeClosed()
-      .subscribe((storeData: IStore) => {
-        if (storeData) {
-          this.deleteStore();
+      .subscribe((productData: IProduct) => {
+        if (productData) {
+          this.deleteProduct(product.productId);
         }
       });
   }
 
-  createStore(storeData: IStore) {
-    const sub: Subscription = this.storeService.createStore(storeData)
+  createProduct(productData: IProduct) {
+    const sub: Subscription = this.storeService.createProduct(productData)
       .subscribe(result => {
         if (result) {
-          this.getStoreByStoreOwner();
-        }
-      });
-    this.subscriptions.push(sub);
-  }
-
-  editStore(storeData: IStore) {
-    const sub: Subscription = this.storeService.editStore(storeData)
-      .subscribe(result => {
-        if (result) {
-          this.getStoreByStoreOwner();
+          this.getProducts();
         }
       });
     this.subscriptions.push(sub);
   }
 
-  deleteStore() {
-    const sub: Subscription = this.storeService.deleteStore(this.store.storeId)
+  editProduct(productData: IProduct) {
+    const sub: Subscription = this.storeService.editProduct(productData)
       .subscribe(result => {
         if (result) {
-          this.getStoreByStoreOwner();
+          this.getProducts();
+        }
+      });
+    this.subscriptions.push(sub);
+  }
+
+  deleteProduct(productId: number) {
+    const sub: Subscription = this.storeService.deleteProduct(productId)
+      .subscribe(result => {
+        if (result) {
+          this.getProducts();
         }
       });
     this.subscriptions.push(sub);
@@ -117,7 +124,7 @@ export class HomeComponent implements OnInit {
   ngOnDestroy() {
     this.subscriptions.forEach((sub: Subscription) => {
       sub.unsubscribe();
-    });
+    })
   }
 
 }

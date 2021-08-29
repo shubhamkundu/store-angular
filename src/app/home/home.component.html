@@ -1,1 +1,47 @@
-home component
+<div class="container">
+    <mat-card class="home-card">
+        <mat-card-header>
+            <mat-card-title>{{loggedInUser.name}} <span *ngIf="isAdmin()">(Admin)</span></mat-card-title>
+            <mat-card-subtitle>{{loggedInUser.email}}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+            <p>Your User Id: {{loggedInUser.userId}}</p>
+            <p>Joined on: {{loggedInUser.createdOn}}</p>
+            <mat-card class="store-card">
+                <div *ngIf="!!store">
+                    <mat-card-header>
+                        <mat-card-title>{{store.name}}</mat-card-title>
+                        <mat-card-subtitle>Owner: {{loggedInUser.name}} ({{loggedInUser.email}})</mat-card-subtitle>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <p>Phone: {{store.phone}}</p>
+                        <p>Location: {{store.location}}</p>
+                    </mat-card-content>
+                    <mat-card-actions>
+                        <button class="btn btn-primary">
+                            <a href="/store/{{store.storeId}}" class="text-reset text-decoration-none">Open</a>
+                        </button>
+                        <button *ngIf="isAdmin()" class="btn btn-secondary" (click)="openStoreDialog('Edit')">
+                            Edit
+                        </button>
+                        <button *ngIf="isAdmin()" class="btn btn-danger" (click)="openDeleteDialog()">Delete</button>
+                    </mat-card-actions>
+                </div>
+                <div *ngIf="!store">
+                    <h1>You don't have any store.</h1>
+                </div>
+            </mat-card>
+        </mat-card-content>
+        <mat-card-actions>
+            <!-- <button class="btn btn-primary">
+                <a href="/store" class="text-reset text-decoration-none">Go to Store</a>
+            </button> -->
+            <div *ngIf="isAdmin()">
+                <button class="btn btn-primary" (click)="openStoreDialog('Create')">Create New Store</button>
+                <button *ngIf="isAdmin()" class="btn btn-secondary" (click)="openStoreDialog('Create')">
+                    <a href="/all-stores" class="text-reset text-decoration-none">View All Stores</a>
+                </button>
+            </div>
+        </mat-card-actions>
+    </mat-card>
+</div>

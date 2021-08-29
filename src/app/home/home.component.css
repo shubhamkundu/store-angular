@@ -1,0 +1,43 @@
+.home-card {
+  width: 100%;
+  min-height: 550px;
+  margin-top: 15px;
+  position: relative;
+}
+
+.home-card > mat-card-content {
+  padding-top: 15px;
+  margin-left: 17px;
+}
+
+.home-card > mat-card-actions {
+  position: absolute;
+  bottom: 20px;
+  margin-left: 17px;
+}
+
+.home-card > mat-card-actions button {
+  margin-right: 15px;
+}
+
+.store-card {
+  background: darkkhaki;
+  margin-top: 30px;
+  height: 290px;
+  position: relative;
+}
+
+.store-card mat-card-content {
+  padding-top: 15px;
+  margin-left: 17px;
+}
+
+.store-card mat-card-actions {
+  position: absolute;
+  bottom: 0;
+  margin-left: 17px;
+}
+
+.store-card mat-card-actions button {
+  margin-right: 15px;
+}

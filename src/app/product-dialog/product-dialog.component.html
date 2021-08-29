@@ -1,0 +1,91 @@
+<div class="container">
+    <h1 mat-dialog-title>
+        <span *ngIf="data.dialogType === 'Create'">Add Product</span>
+        <span *ngIf="data.dialogType === 'Edit'">Edit Product</span>
+    </h1>
+    <form [formGroup]="form">
+        <div mat-dialog-content>
+            <p>
+                <mat-form-field appearance="fill">
+                    <input type="text" matInput placeholder="Product name" formControlName="name">
+                </mat-form-field>
+            </p>
+
+            <div *ngIf="form.controls['name'].invalid && (form.controls['name'].dirty || form.controls['name'].touched)"
+                class="alert alert-danger">
+
+                <div *ngIf="form.controls['name'].errors?.required">
+                    Product name is required.
+                </div>
+                <div *ngIf="form.controls['name'].errors?.minlength">
+                    Minimum {{form.controls['name'].errors?.minlength.requiredLength}} characters.
+                </div>
+            </div>
+
+            <p>
+                <mat-form-field appearance="fill">
+                    <mat-label>Category</mat-label>
+                    <mat-select formControlName="category" name="category">
+                        <mat-option *ngFor="let category of categoryList" [value]="category.categoryId">
+                            {{category.categoryName}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </p>
+
+            <div *ngIf="form.controls['category'].invalid && (form.controls['category'].dirty || form.controls['category'].touched)"
+                class="alert alert-danger">
+
+                <div *ngIf="form.controls['category'].errors?.required">
+                    Category is required.
+                </div>
+            </div>
+
+            <p>
+                <mat-form-field appearance="fill">
+                    <input type="number" min="0" max="99999" matInput placeholder="Available Quantity"
+                        formControlName="availableQuantity">
+                </mat-form-field>
+            </p>
+
+            <div *ngIf="form.controls['availableQuantity'].invalid && (form.controls['availableQuantity'].dirty || form.controls['availableQuantity'].touched)"
+                class="alert alert-danger">
+
+                <div *ngIf="form.controls['availableQuantity'].errors?.required">
+                    Available Quantity is required.
+                </div>
+                <div *ngIf="form.controls['availableQuantity'].errors?.pattern">
+                    Should be a number between 0 and 99999.
+                </div>
+            </div>
+
+            <p>
+                <mat-form-field appearance="fill">
+                    <input type="text" matInput placeholder="Product description" formControlName="description">
+                </mat-form-field>
+            </p>
+
+            <div *ngIf="form.controls['name'].invalid && (form.controls['name'].dirty || form.controls['name'].touched)"
+                class="alert alert-danger">
+
+                <div *ngIf="form.controls['name'].errors?.required">
+                    Product description is required.
+                </div>
+                <div *ngIf="form.controls['name'].errors?.minlength">
+                    Minimum {{form.controls['name'].errors?.minlength.requiredLength}} characters.
+                </div>
+                <div *ngIf="form.controls['name'].errors?.maxlength">
+                    Maximum {{form.controls['name'].errors?.maxlength.requiredLength}} characters.
+                </div>
+            </div>
+
+        </div>
+        <div mat-dialog-actions>
+            <button type="submit" class="btn btn-sm btn-primary" (click)="onClickSubmit()" [disabled]="isSubmitDisabled()" cdkFocusInitial>
+                <span *ngIf="data.dialogType === 'Create'">Add Product</span>
+                <span *ngIf="data.dialogType === 'Edit'">Update Product</span>
+            </button>
+            <button mat-button (click)="onClickClose()">Close</button>
+        </div>
+    </form>
+</div>

@@ -1,10 +1,10 @@
 import { Directive, Input } from '@angular/core';
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
-import { StoreService } from 'src/app/store.service';
+import { AppService } from 'src/app/app.service';
 
-export function passwordValidator(storeService: StoreService): ValidatorFn {
+export function passwordValidator(appService: AppService): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
-    const valid = storeService.validatePassword(control.value);
+    const valid = appService.validatePassword(control.value);
     return valid ? null : { invalidPassword: { value: control.value } };
   };
 }
@@ -15,9 +15,9 @@ export function passwordValidator(storeService: StoreService): ValidatorFn {
 export class InvalidPasswordDirective {
   @Input('storeInvalidPassword') invalidPassword = '';
 
-  constructor(private storeService: StoreService) { }
+  constructor(private appService: AppService) { }
 
   validate(control: AbstractControl): ValidationErrors | null {
-    return this.invalidPassword ? passwordValidator(this.storeService)(control) : null;
+    return this.invalidPassword ? passwordValidator(this.appService)(control) : null;
   }
 }

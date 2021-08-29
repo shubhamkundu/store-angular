@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { AuthService } from './auth/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -11,7 +12,8 @@ export class AppComponent {
   name: string;
 
   constructor(
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private authService: AuthService
   ) { }
 
   ngOnInit() {
@@ -19,5 +21,7 @@ export class AppComponent {
       this.name = params['name'];
       console.log('this.name', this.name);
     });
+
+    this.authService.resetLoggedInUser();
   }
 }

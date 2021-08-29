@@ -31,24 +31,13 @@
                 <div *ngIf="form.controls['password'].errors?.required">
                     Password is required.
                 </div>
-                <div *ngIf="form.controls['password'].errors?.minlength">
-                    Minimum {{form.controls['password'].errors?.minlength.requiredLength}} characters
-                </div>
-                <div *ngIf="form.controls['password'].errors?.invalidPassword">
-                    Invalid Password.
-                    <br>
-                    At least one Capital letter required.
-                    <br>
-                    At least one small letter required.
-                    <br>
-                    At least one digit required.
-                    <br>
-                    At least one special character required.
-                </div>
             </div>
 
             <div class="button">
-                <button type="submit" mat-button>Login</button>
+                <button class="btn btn-sm btn-secondary signup-button">
+                    <a href="/signup" class="text-reset text-decoration-none">Sign Up</a>
+                </button>
+                <button type="submit" class="btn btn-primary">Login</button>
             </div>
 
         </form>

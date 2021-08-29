@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { HttpErrorHandler, HandleError } from './../http-error-handler.service';
-import { SignupData, User, LoginData, LoginResponse } from './auth.interface';
+import { ISignupData, IUser, ILoginData, ILoginResponse } from './auth.interfaces';
 
 const skipAuthHttpOptions = {
     headers: new HttpHeaders({
@@ -19,6 +19,7 @@ const skipAuthHttpOptions = {
 export class AuthService {
     msURL = environment.msURL;
     private handleError: HandleError;
+    private loggedInUser: IUser;
 
     constructor(
         private http: HttpClient,
@@ -28,8 +29,19 @@ export class AuthService {
         this.handleError = httpErrorHandler.createHandleError('AuthService');
     }
 
-    getLoggedInUser(): User {
-        const token = sessionStorage.getItem('token');
+    resetLoggedInUser() {
+        this.loggedInUser = this.decodeToken();
+        // if (!this.loggedInUser) {
+        //     this.router.navigate(['login']);
+        // }
+    }
+
+    getLoggedInUser(): IUser {
+        return this.loggedInUser;
+    }
+
+    decodeToken(): IUser {
+        const token = this.getAuthToken();
         if (token && token !== 'undefined') {
             try {
                 const user = JSON.parse(atob(token.split('.')[1]));
@@ -53,24 +65,29 @@ export class AuthService {
         return sessionStorage.getItem('token');
     }
 
-    signup(signupData: SignupData): Observable<User> {
-        return this.http.post<User>(`${this.msURL}/auth/`, signupData, skipAuthHttpOptions)
+    removeAuthToken() {
+        sessionStorage.removeItem('token');
+    }
+
+    signup(signupData: ISignupData): Observable<IUser> {
+        return this.http.post<IUser>(`${this.msURL}/auth/`, signupData, skipAuthHttpOptions)
             .pipe(
-                catchError(this.handleError('signup', null as User))
+                catchError(this.handleError('signup', null as IUser))
             );
     }
 
-    login(loginData: LoginData): Observable<LoginResponse> {
-        return this.http.post<LoginResponse>(`${this.msURL}/auth/login`, loginData, skipAuthHttpOptions)
+    login(loginData: ILoginData): Observable<ILoginResponse> {
+        return this.http.post<ILoginResponse>(`${this.msURL}/auth/login`, loginData, skipAuthHttpOptions)
             .pipe(
-                catchError(this.handleError('login', null as LoginResponse))
+                catchError(this.handleError('login', null as ILoginResponse))
             );
     }
 
     logout() {
-        sessionStorage.removeItem('token');
+        this.removeAuthToken();
+        this.resetLoggedInUser();
         setTimeout(() => {
             this.router.navigate(['login'])
-        }, 3000);
+        }, 2000);
     }
 }

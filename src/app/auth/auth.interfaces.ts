@@ -1,25 +1,26 @@
-export interface SignupData {
+export interface ISignupData {
     name: string;
     email: string;
     password: string;
     confirmPassword: string;
 }
 
-export interface User {
+export interface IUser {
     userId: number;
     name: string;
     email: string;
     userRole?: string;
-    createdOn: string;
-    isDeleted: boolean;
+    storeId?: number;
+    createdOn?: string;
+    isDeleted?: false;
 }
 
-export interface LoginData {
+export interface ILoginData {
     email: string;
     password: string;
 }
 
-export interface LoginResponse {
+export interface ILoginResponse {
     token: string;
-    user: User;
+    user: IUser;
 }
