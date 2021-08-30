@@ -26,7 +26,6 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.loggedInUser = this.authService.getLoggedInUser();
-    this.loggedInUser = this.authService.getLoggedInUser();
     this.subscriptions = [];
     this.getStoreByStoreOwner();
   }

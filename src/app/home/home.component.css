@@ -1,6 +1,6 @@
 .home-card {
   width: 100%;
-  min-height: 550px;
+  min-height: 560px;
   margin-top: 15px;
   position: relative;
 }
@@ -14,6 +14,7 @@
   position: absolute;
   bottom: 20px;
   margin-left: 17px;
+  margin-bottom: 5px;
 }
 
 .home-card > mat-card-actions button {

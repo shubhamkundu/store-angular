@@ -1,12 +1,16 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { AllStoresComponent } from './all-stores/all-stores.component';
 import { AuthGuardService as AuthGuard } from './auth/auth-guard.service';
+import { AdminGuardService as AdminGuard } from './auth/admin-guard.service';
 import { NoauthGuardService as NoauthGuard } from './auth/noauth-guard.service copy';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { LogoutComponent } from './logout/logout.component';
 import { SignupComponent } from './signup/signup.component';
 import { StoreComponent } from './store/store.component';
+import { AllRequestsComponent } from './all-requests/all-requests.component';
+import { MyRequestsComponent } from './my-requests/my-requests.component';
 
 const routes: Routes = [
   {
@@ -37,6 +41,21 @@ const routes: Routes = [
   {
     path: 'store/:storeId',
     component: StoreComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'all-stores',
+    component: AllStoresComponent,
+    canActivate: [AdminGuard]
+  },
+  {
+    path: 'all-requests',
+    component: AllRequestsComponent,
+    canActivate: [AdminGuard]
+  },
+  {
+    path: 'my-requests',
+    component: MyRequestsComponent,
     canActivate: [AuthGuard]
   }
 ];

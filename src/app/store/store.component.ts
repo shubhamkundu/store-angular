@@ -103,8 +103,8 @@ export class StoreComponent implements OnInit, OnDestroy {
     const dialogRef = this.dialog.open(DeleteDialogComponent, dialogConfig);
 
     dialogRef.beforeClosed()
-      .subscribe((productData: IProduct) => {
-        if (productData) {
+      .subscribe((deleted: boolean) => {
+        if (deleted) {
           this.deleteProduct(product.productId);
         }
       });

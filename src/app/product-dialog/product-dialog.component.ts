@@ -1,7 +1,6 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { AppService } from '../app.service';
 import { ICategory, IProduct, IStore } from '../store/store.interfaces';
 import { StoreService } from '../store/store.service';
 
@@ -109,7 +108,9 @@ export class ProductDialogComponent implements OnInit, OnDestroy {
   }
 
   isSubmitDisabled() {
-    return this.form.invalid;
+    const productData: IProduct = this.getProductData();
+    delete productData.productId;
+    return this.form.invalid || (this.data.dialogType === 'Edit' && Object.keys(productData).length <= 0);
   }
 
   ngOnDestroy() {

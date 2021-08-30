@@ -10,7 +10,7 @@ export interface IDeleteDialogData {
   templateUrl: './delete-dialog.component.html',
   styleUrls: ['./delete-dialog.component.css']
 })
-export class DeleteDialogComponent implements OnInit, OnDestroy {
+export class DeleteDialogComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<DeleteDialogComponent>,
@@ -22,10 +22,6 @@ export class DeleteDialogComponent implements OnInit, OnDestroy {
 
   onClickClose() {
     this.dialogRef.close();
-  }
-
-  ngOnDestroy() {
-    this.onClickClose();
   }
 
 }

@@ -11,6 +11,7 @@ export interface IUser {
     email: string;
     userRole?: string;
     storeId?: number;
+    storeRequestId?: number;
     createdOn?: string;
     isDeleted?: false;
 }

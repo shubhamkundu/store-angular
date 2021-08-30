@@ -12,6 +12,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatTableModule } from '@angular/material/table';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HeaderComponent } from './header/header.component';
 import { SignupComponent } from './signup/signup.component';
@@ -29,6 +33,12 @@ import { ProductDialogComponent } from './product-dialog/product-dialog.componen
 import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
 import { SuccessDialogComponent } from './success-dialog/success-dialog.component';
 import { AllStoresComponent } from './all-stores/all-stores.component';
+import { AllRequestsComponent } from './all-requests/all-requests.component';
+import { MyRequestsComponent } from './my-requests/my-requests.component';
+import { StoreRequestDialogComponent } from './store-request-dialog/store-request-dialog.component';
+import { RequestTableComponent } from './request-table/request-table.component';
+import { ApproveDialogComponent } from './approve-dialog/approve-dialog.component';
+import { RejectDialogComponent } from './reject-dialog/reject-dialog.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +58,13 @@ import { AllStoresComponent } from './all-stores/all-stores.component';
     ProductDialogComponent,
     DeleteDialogComponent,
     SuccessDialogComponent,
-    AllStoresComponent
+    AllStoresComponent,
+    AllRequestsComponent,
+    MyRequestsComponent,
+    StoreRequestDialogComponent,
+    RequestTableComponent,
+    ApproveDialogComponent,
+    RejectDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -60,6 +76,10 @@ import { AllStoresComponent } from './all-stores/all-stores.component';
     MatSelectModule,
     MatDialogModule,
     MatGridListModule,
+    MatTabsModule,
+    MatTableModule,
+    MatIconModule,
+    MatTooltipModule,
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule

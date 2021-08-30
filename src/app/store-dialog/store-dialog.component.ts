@@ -45,9 +45,9 @@ export class StoreDialogComponent implements OnInit, OnDestroy {
     const sub: Subscription = this.storeService.getAllUsers()
       .subscribe((allUsers: IUser[]) => {
         if (this.data.dialogType === 'Create') {
-          this.storeOwnerList = allUsers.filter(user => !user.storeId);
+          this.storeOwnerList = allUsers.filter(user => !user.storeId && !user.storeRequestId);
         } else if (this.data.dialogType === 'Edit') {
-          this.storeOwnerList = allUsers.filter(user => user.storeId);
+          this.storeOwnerList = allUsers.filter(user => user.storeId && !user.storeRequestId);
         }
       });
     this.subscriptions.push(sub);
@@ -68,7 +68,7 @@ export class StoreDialogComponent implements OnInit, OnDestroy {
         Validators.required,
         Validators.pattern(this.PHONE_PATTERN)
       ]),
-      storeOwner: new FormControl('', [
+      storeOwnerId: new FormControl('', [
         Validators.required
       ])
     });
@@ -78,7 +78,7 @@ export class StoreDialogComponent implements OnInit, OnDestroy {
     this.form.controls['name'].setValue(this.data.store.name);
     this.form.controls['location'].setValue(this.data.store.location);
     this.form.controls['phone'].setValue(this.data.store.phone);
-    this.form.controls['storeOwner'].setValue(this.data.store.storeOwner);
+    this.form.controls['storeOwnerId'].setValue(this.data.store.storeOwnerId);
   }
 
   onClickClose() {
@@ -103,7 +103,7 @@ export class StoreDialogComponent implements OnInit, OnDestroy {
       storeData.phone = this.form.controls['phone'].value;
     }
     if (this.data.dialogType === 'Create') {
-      storeData.storeOwner = this.form.controls['storeOwner'].value;
+      storeData.storeOwnerId = this.form.controls['storeOwnerId'].value;
     }
     return storeData;
   }
@@ -113,7 +113,9 @@ export class StoreDialogComponent implements OnInit, OnDestroy {
   }
 
   isSubmitDisabled() {
-    return this.form.invalid;
+    const storeData: IStore = this.getStoreData();
+    delete storeData.storeId;
+    return this.form.invalid || (this.data.dialogType === 'Edit' && Object.keys(storeData).length <= 0);
   }
 
   ngOnDestroy() {

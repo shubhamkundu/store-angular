@@ -1,0 +1,42 @@
+.all-stores-card {
+  width: 100%;
+  margin-top: 15px;
+  margin-bottom: 25px;
+  position: relative;
+}
+
+.all-stores-card mat-card-content.outer-card-content {
+  height: 430px;
+  overflow-y: scroll;
+}
+
+.all-stores-card mat-card-content.inner-card-content {
+  margin-left: 17px;
+}
+
+.all-stores-card>mat-card-actions {
+  bottom: 0;
+  margin-left: 17px;
+  margin-bottom: 5px;
+}
+
+.all-stores-card>mat-card-actions button {
+  margin-right: 15px;
+}
+
+.store-card {
+  background: darkkhaki;
+  width: 400px;
+  height: 200px;
+  position: relative;
+}
+
+.store-card mat-card-actions {
+  position: absolute;
+  bottom: 15px;
+  margin-left: 17px;
+}
+
+.store-card mat-card-actions button {
+  margin-right: 15px;
+}

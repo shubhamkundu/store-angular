@@ -1,12 +1,12 @@
 <div class="container">
-    <div>
+    <div *ngIf="!!store">
         <mat-card class="store-card">
             <mat-card-header>
                 <mat-card-title>{{store.name}} <small>({{store.phone}})</small></mat-card-title>
                 <mat-card-subtitle>Location: {{store.location}}</mat-card-subtitle>
             </mat-card-header>
             <mat-card-content class="outer-card-content">
-                <mat-grid-list cols="2" rowHeight="2:1">
+                <mat-grid-list *ngIf="!!products.length" cols="2" rowHeight="2:1">
                     <mat-grid-tile *ngFor="let product of products">
                         <mat-card class="product-card">
                             <mat-card-header>
@@ -29,10 +29,18 @@
                         </mat-card>
                     </mat-grid-tile>
                 </mat-grid-list>
+                <p *ngIf="!products.length">No product available!</p>
             </mat-card-content>
+            <mat-card-actions>
+                <div>
+                    <button class="btn btn-primary" (click)="openProductDialog('Create')">Create New Product</button>
+                </div>
+            </mat-card-actions>
         </mat-card>
     </div>
-    <div>
-        <button class="btn btn-primary" (click)="openProductDialog('Create')">Create New Product</button>
+    <div *ngIf="!store">
+        <mat-card class="store-card">
+            Store not available!
+        </mat-card>
     </div>
 </div>

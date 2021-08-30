@@ -5,7 +5,7 @@ import { catchError } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { IUser } from '../auth/auth.interfaces';
 import { HttpErrorHandler, HandleError } from './../http-error-handler.service';
-import { ICategory, IProduct, IStore } from './store.interfaces';
+import { ICategory, IProduct, IStore, IStoreRequest } from './store.interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -39,6 +39,20 @@ export class StoreService {
     return this.http.get<IUser[]>(`${this.msURL}/user/`)
       .pipe(
         catchError(this.handleError('getAllUsers', null as IUser[]))
+      );
+  }
+
+  getAllUsersHavingStore(): Observable<IUser[]> {
+    return this.http.get<IUser[]>(`${this.msURL}/user/having-store`)
+      .pipe(
+        catchError(this.handleError('getAllUsersHavingStore', null as IUser[]))
+      );
+  }
+
+  getUserByUserId(userId: number): Observable<IUser> {
+    return this.http.get<IUser>(`${this.msURL}/user?userId=${userId}`)
+      .pipe(
+        catchError(this.handleError('getUserByUserId', null as IUser))
       );
   }
 
@@ -95,6 +109,62 @@ export class StoreService {
     return this.http.get<ICategory[]>(`${this.msURL}/category/`)
       .pipe(
         catchError(this.handleError('getAllCategories', null as ICategory[]))
+      );
+  }
+
+  getAllStores(): Observable<IStore[]> {
+    return this.http.get<IStore[]>(`${this.msURL}/store/`)
+      .pipe(
+        catchError(this.handleError('getAllStores', null as IStore[]))
+      );
+  }
+
+  getAllStoreRequests(): Observable<IStoreRequest[]> {
+    return this.http.get<IStoreRequest[]>(`${this.msURL}/store-request/`)
+      .pipe(
+        catchError(this.handleError('getAllStoreRequests', null as IStoreRequest[]))
+      );
+  }
+
+  getStoreRequestsByLoggedInUser(): Observable<IStoreRequest[]> {
+    return this.http.get<IStoreRequest[]>(`${this.msURL}/store-request/by-store-requestor`)
+      .pipe(
+        catchError(this.handleError('getStoreRequestsByLoggedInUser', null as IStoreRequest[]))
+      );
+  }
+
+  createStoreRequest(storeRequestData: IStoreRequest): Observable<IStoreRequest> {
+    return this.http.post<IStoreRequest>(`${this.msURL}/store-request/`, storeRequestData)
+      .pipe(
+        catchError(this.handleError('createStoreRequest', null as IStoreRequest))
+      );
+  }
+
+  editStoreRequest(storeRequestData: IStoreRequest): Observable<IStoreRequest> {
+    return this.http.patch<IStoreRequest>(`${this.msURL}/store-request/`, storeRequestData)
+      .pipe(
+        catchError(this.handleError('editStoreRequest', null as IStoreRequest))
+      );
+  }
+
+  approveStoreRequest(storeRequestId: number): Observable<IStoreRequest> {
+    return this.http.patch<IStoreRequest>(`${this.msURL}/store-request/approve?storeRequestId=${storeRequestId}`, {})
+      .pipe(
+        catchError(this.handleError('approveStoreRequest', null as IStoreRequest))
+      );
+  }
+
+  rejectStoreRequest(rejectBody: IStoreRequest): Observable<IStoreRequest> {
+    return this.http.patch<IStoreRequest>(`${this.msURL}/store-request/reject`, rejectBody)
+      .pipe(
+        catchError(this.handleError('rejectStoreRequest', null as IStoreRequest))
+      );
+  }
+
+  deleteStoreRequest(storeRequestId: number): Observable<IStoreRequest> {
+    return this.http.delete<IStoreRequest>(`${this.msURL}/store-request?storeRequestId=${storeRequestId}`)
+      .pipe(
+        catchError(this.handleError('deleteStoreRequest', null as IStoreRequest))
       );
   }
 
