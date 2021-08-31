@@ -17,6 +17,26 @@
             <a class="nav-link active" aria-current="page" href="/signup">Sign Up</a>
           </button>
         </li>
+        <li *ngIf="isAuthenticated() && !!loggedInUser?.storeId" class="nav-item">
+          <button class="btn btn-sm btn-primary" type="button">
+            <a class="nav-link active" aria-current="page" href="/store/{{loggedInUser.storeId}}">My Store</a>
+          </button>
+        </li>
+        <li *ngIf="isAuthenticated() && isAdmin()" class="nav-item">
+          <button class="btn btn-sm btn-secondary" type="button">
+            <a class="nav-link active" aria-current="page" href="/all-stores">All Stores</a>
+          </button>
+        </li>
+        <li *ngIf="isAuthenticated() && !isAdmin()" class="nav-item">
+          <button class="btn btn-sm btn-primary" type="button">
+            <a class="nav-link active" aria-current="page" href="/my-requests">My Requests</a>
+          </button>
+        </li>
+        <li *ngIf="isAuthenticated() && isAdmin()" class="nav-item">
+          <button class="btn btn-sm btn-secondary" type="button">
+            <a class="nav-link active" aria-current="page" href="/all-requests">All Requests</a>
+          </button>
+        </li>
         <li *ngIf="isAuthenticated()" class="nav-item">
           <button class="btn btn-sm btn-outline-secondary" type="button">
             <a class="nav-link active" aria-current="page" href="/logout">Logout</a>

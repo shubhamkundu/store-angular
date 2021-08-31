@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+import { AppService } from '../app.service';
 import { HttpErrorHandler, HandleError } from './../http-error-handler.service';
 import { ISignupData, IUser, ILoginData, ILoginResponse } from './auth.interfaces';
 
@@ -24,7 +25,8 @@ export class AuthService {
     constructor(
         private http: HttpClient,
         httpErrorHandler: HttpErrorHandler,
-        private router: Router
+        private router: Router,
+        private appService: AppService
     ) {
         this.handleError = httpErrorHandler.createHandleError('AuthService');
     }
@@ -86,8 +88,7 @@ export class AuthService {
     logout() {
         this.removeAuthToken();
         this.resetLoggedInUser();
-        setTimeout(() => {
-            this.router.navigate(['login'])
-        }, 2000);
+        this.router.navigate(['login']);
+        this.appService.spin$.next(false);
     }
 }

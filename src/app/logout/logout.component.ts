@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AppService } from '../app.service';
 import { AuthService } from '../auth/auth.service';
 
 @Component({
@@ -7,16 +8,15 @@ import { AuthService } from '../auth/auth.service';
   styleUrls: ['./logout.component.css']
 })
 export class LogoutComponent implements OnInit {
-  loggedOut: boolean;
 
-  constructor(private authService: AuthService) { }
+  constructor(
+    private authService: AuthService,
+    private appService: AppService
+  ) { }
 
   ngOnInit(): void {
-    this.loggedOut = false;
-    setTimeout(() => {
-      this.authService.logout();
-      this.loggedOut = true;
-    }, 1000);
+    this.appService.spin$.next(true);
+    this.authService.logout();
   }
 
 }

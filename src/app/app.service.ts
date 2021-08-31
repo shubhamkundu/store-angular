@@ -30,8 +30,9 @@ export class AppService {
       )
       .subscribe(
         (res) => {
-          if (res === 1) { this.showSpinner() }
-          else if (res == 0) {
+          if (res === 1) {
+            this.spinnerTopRef.hasAttached() ? null : this.showSpinner();
+          } else if (res === 0) {
             this.spinnerTopRef.hasAttached() ? this.stopSpinner() : null;
           }
         }
