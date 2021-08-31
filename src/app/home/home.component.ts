@@ -24,12 +24,16 @@ export class HomeComponent implements OnInit {
     private storeService: StoreService,
     public dialog: MatDialog,
     private appService: AppService
-  ) {}
+  ) { }
 
   ngOnInit() {
-    this.loggedInUser = this.authService.getLoggedInUser();
+    this.getLoggedInUser();
     this.subscriptions = [];
     this.getStoreByStoreOwner();
+  }
+
+  getLoggedInUser() {
+    this.loggedInUser = this.authService.getLoggedInUser();
   }
 
   getStoreByStoreOwner() {

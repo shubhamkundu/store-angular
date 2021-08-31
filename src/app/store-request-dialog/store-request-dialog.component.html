@@ -1,0 +1,90 @@
+<div class="container">
+    <h1 mat-dialog-title>{{data.dialogType}} Store Request</h1>
+    <form [formGroup]="form">
+        <div mat-dialog-content>
+            <p>
+                <mat-form-field appearance="fill">
+                    <input type="text" matInput placeholder="Store name" formControlName="name">
+                </mat-form-field>
+            </p>
+
+            <div *ngIf="form.controls['name'].invalid && (form.controls['name'].dirty || form.controls['name'].touched)"
+                class="alert alert-danger">
+
+                <div *ngIf="form.controls['name'].errors?.required">
+                    Store name is required.
+                </div>
+                <div *ngIf="form.controls['name'].errors?.minlength">
+                    Minimum {{form.controls['name'].errors?.minlength.requiredLength}} characters.
+                </div>
+                <div *ngIf="form.controls['name'].errors?.invalidName">
+                    Only alphabets allowed.
+                </div>
+            </div>
+
+            <p>
+                <mat-form-field appearance="fill">
+                    <input type="text" matInput placeholder="Location" formControlName="location">
+                </mat-form-field>
+            </p>
+
+            <div *ngIf="form.controls['location'].invalid && (form.controls['location'].dirty || form.controls['location'].touched)"
+                class="alert alert-danger">
+
+                <div *ngIf="form.controls['location'].errors?.required">
+                    Location is required.
+                </div>
+                <div *ngIf="form.controls['location'].errors?.minlength">
+                    Minimum {{form.controls['location'].errors?.minlength.requiredLength}} characters.
+                </div>
+            </div>
+
+            <p>
+                <mat-form-field appearance="fill">
+                    <input type="number" matInput placeholder="Phone" formControlName="phone">
+                </mat-form-field>
+            </p>
+
+            <div *ngIf="form.controls['phone'].invalid && (form.controls['phone'].dirty || form.controls['phone'].touched)"
+                class="alert alert-danger">
+
+                <div *ngIf="form.controls['phone'].errors?.required">
+                    Phone is required.
+                </div>
+                <div *ngIf="form.controls['phone'].errors?.pattern">
+                    Phone should be a 10-digit number.
+                </div>
+            </div>
+
+            <p>
+                <mat-form-field appearance="fill">
+                    <mat-label>Store owner</mat-label>
+                    <mat-select name="storeOwnerId" [disabled]="true" [value]="loggedInUser.userId">
+                        <mat-option [value]="loggedInUser.userId">
+                            {{loggedInUser.name}} ({{loggedInUser.email}})
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </p>
+
+        </div>
+        <div mat-dialog-actions>
+            <button type="submit" class="btn btn-sm btn-primary" [mat-dialog-close]="getStoreRequestData()"
+                [disabled]="isSubmitDisabled()" cdkFocusInitial>
+                <span *ngIf="data.dialogType === 'Create' && data.storeRequestType === 'insert'">
+                    Create Store Creation Request
+                </span>
+                <span *ngIf="data.dialogType === 'Create' && data.storeRequestType === 'update'">
+                    Create Store Updation Request
+                </span>
+                <span *ngIf="data.dialogType === 'Edit' && data.storeRequestType === 'insert'">
+                    Create Store Updation Request
+                </span>
+                <span *ngIf="data.dialogType === 'Edit' && data.storeRequestType === 'update'">
+                    Update Store Updation Request
+                </span>
+            </button>
+            <button mat-button (click)="onClickClose()">Close</button>
+        </div>
+    </form>
+</div>

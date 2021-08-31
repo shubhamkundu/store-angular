@@ -1,0 +1,6 @@
+<h1 mat-dialog-title>Confirm Approval</h1>
+<div mat-dialog-content>Are you sure that you want to approve <b>{{data.storeRequest.name}}</b>?</div>
+<div mat-dialog-actions>
+    <button class="btn btn-sm btn-success" [mat-dialog-close]="true">Confirm</button>
+    <button class="btn btn-secondary" mat-button (click)="onClickClose()">Cancel</button>
+</div>

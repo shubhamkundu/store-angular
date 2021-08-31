@@ -11,7 +11,7 @@
                         <mat-card class="store-card">
                             <mat-card-header>
                                 <mat-card-title>{{store.name}}</mat-card-title>
-                                <mat-card-subtitle>{{store.storeOwner.name}} ({{store.storeOwner.email}})</mat-card-subtitle>
+                                <mat-card-subtitle *ngIf="!!store.storeOwner">{{store.storeOwner.name}} ({{store.storeOwner.email}})</mat-card-subtitle>
                             </mat-card-header>
                             <mat-card-content class="inner-card-content">
                                 <p>Phone: {{store.phone}}</p>

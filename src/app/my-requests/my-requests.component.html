@@ -1,0 +1,49 @@
+<div class="container">
+    <mat-card *ngIf="!!loggedInUser" class="my-requests-card">
+        <mat-card-header>
+            <mat-card-title>My Requests</mat-card-title>
+            <mat-card-subtitle>{{loggedInUser.name}} ({{loggedInUser.email}})</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content *ngIf="!!requests.length">
+            <mat-tab-group>
+                <mat-tab *ngIf="!!pendingRequests.length" label="Pending">
+                    <store-request-table [tableType]="'requestor'" [status]="'pending'" [requests]="pendingRequests"
+                        (editRequest)="openStoreRequestDialog('Edit', $event.storeRequestType, $event)"
+                        (deleteRequest)="openDeleteDialog($event)"></store-request-table>
+                </mat-tab>
+                <mat-tab *ngIf="!pendingRequests.length" label="Pending">
+                    You don't have any Pending requests.
+                </mat-tab>
+                <mat-tab *ngIf="!!approvedRequests.length" label="Approved">
+                    <store-request-table [tableType]="'requestor'" [status]="'approved'" [requests]="approvedRequests">
+                    </store-request-table>
+                </mat-tab>
+                <mat-tab *ngIf="!approvedRequests.length" label="Approved">
+                    You don't have any Approved requests.
+                </mat-tab>
+                <mat-tab *ngIf="!!rejectedRequests.length" label="Rejected">
+                    <store-request-table [tableType]="'requestor'" [status]="'rejected'" [requests]="rejectedRequests">
+                    </store-request-table>
+                </mat-tab>
+                <mat-tab *ngIf="!rejectedRequests.length" label="Rejected">
+                    You don't have any Rejected requests.
+                </mat-tab>
+            </mat-tab-group>
+        </mat-card-content>
+        <mat-card-content *ngIf="!requests.length">
+            You don't have any requests.
+        </mat-card-content>
+        <mat-card-actions>
+            <div>
+                <button class="btn btn-primary" (click)="openStoreRequestDialog('Create', 'insert')"
+                    [disabled]="isRequestCreationDisabled()">
+                    Request Store Creation
+                </button>
+                <button class="btn btn-primary" (click)="openStoreRequestDialog('Create', 'update')"
+                    [disabled]="isRequestUpdationDisabled()">
+                    Request Store Updation
+                </button>
+            </div>
+        </mat-card-actions>
+    </mat-card>
+</div>

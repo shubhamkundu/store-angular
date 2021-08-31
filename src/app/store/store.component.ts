@@ -30,7 +30,7 @@ export class StoreComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.loggedInUser = this.authService.getLoggedInUser();
+    this.getLoggedInUser();
     this.subscriptions = [];
     if (this.isAdmin()) {
       this.getStoreByStoreId();
@@ -38,6 +38,10 @@ export class StoreComponent implements OnInit, OnDestroy {
       this.getStoreByStoreOwner();
     }
     this.products = [];
+  }
+
+  getLoggedInUser() {
+    this.loggedInUser = this.authService.getLoggedInUser();
   }
 
   getStoreByStoreId() {

@@ -1,5 +1,5 @@
 <div class="container">
-    <mat-card class="home-card">
+    <mat-card *ngIf="!!loggedInUser" class="home-card">
         <mat-card-header>
             <mat-card-title>{{loggedInUser.name}} <span *ngIf="isAdmin()">(Admin)</span></mat-card-title>
             <mat-card-subtitle>{{loggedInUser.email}}</mat-card-subtitle>

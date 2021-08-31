@@ -1,0 +1,42 @@
+.my-requests-card {
+  width: 100%;
+  margin-top: 15px;
+  margin-bottom: 25px;
+  position: relative;
+}
+
+.my-requests-card>mat-card-content {
+  height: 400px;
+  overflow-y: scroll;
+}
+
+.my-requests-card>mat-card-content {
+  margin-left: 17px;
+}
+
+.my-requests-card>mat-card-actions {
+  bottom: 0;
+  margin-left: 17px;
+  margin-bottom: 5px;
+}
+
+.my-requests-card>mat-card-actions button {
+  margin-right: 15px;
+}
+
+/* .product-card {
+  background: darkkhaki;
+  width: 400px;
+  height: 200px;
+  position: relative;
+}
+
+.product-card mat-card-actions {
+  position: absolute;
+  bottom: 15px;
+  margin-left: 17px;
+}
+
+.product-card mat-card-actions button {
+  margin-right: 15px;
+} */

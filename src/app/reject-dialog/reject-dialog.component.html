@@ -1,0 +1,12 @@
+<h1 mat-dialog-title>Confirm Rejection</h1>
+<div mat-dialog-content>
+    <p>Are you sure that you want to reject <b>{{data.storeRequest.name}}</b> request?</p>
+    <p>
+        <input placeholder="Reason" [(ngModel)]="data.storeRequest.rejectReason">
+    </p>
+</div>
+<div mat-dialog-actions>
+    <button class="btn btn-sm btn-danger" [disabled]="isConfirmDisabled()"
+        [mat-dialog-close]="data.storeRequest">Confirm</button>
+    <button class="btn btn-secondary" mat-button (click)="onClickClose()">Cancel</button>
+</div>

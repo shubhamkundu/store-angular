@@ -13,6 +13,10 @@ export class HeaderComponent implements OnInit {
   constructor(private authService: AuthService) { }
 
   ngOnInit(): void {
+    this.getLoggedInUser();
+  }
+
+  getLoggedInUser() {
     this.loggedInUser = this.authService.getLoggedInUser();
   }
 
@@ -21,6 +25,7 @@ export class HeaderComponent implements OnInit {
   }
 
   isAdmin(): boolean {
-    return this.loggedInUser?.userRole === 'admin';
+    const loggedInUser: IUser = this.authService.decodeToken();
+    return loggedInUser?.userRole === 'admin';
   }
 }

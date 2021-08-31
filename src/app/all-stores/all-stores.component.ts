@@ -27,10 +27,14 @@ export class AllStoresComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.loggedInUser = this.authService.getLoggedInUser();
+    this.getLoggedInUser();
     this.subscriptions = [];
     this.stores = [];
     this.getAllStores();
+  }
+
+  getLoggedInUser() {
+    this.loggedInUser = this.authService.getLoggedInUser();
   }
 
   getAllStores() {
