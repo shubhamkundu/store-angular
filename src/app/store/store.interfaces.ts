@@ -35,6 +35,8 @@ export interface ICategory {
 
 export interface IStoreRequest {
     storeRequestId?: number;
+    storeId?: number;
+    storeOwnerId?: number;
     name?: string;
     location?: string;
     phone?: number;

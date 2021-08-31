@@ -47,7 +47,7 @@ export class StoreDialogComponent implements OnInit, OnDestroy {
         if (this.data.dialogType === 'Create') {
           this.storeOwnerList = allUsers.filter(user => !user.storeId && !user.storeRequestId);
         } else if (this.data.dialogType === 'Edit') {
-          this.storeOwnerList = allUsers.filter(user => user.storeId && !user.storeRequestId);
+          this.storeOwnerList = allUsers.filter(user => user.storeId);
         }
       });
     this.subscriptions.push(sub);
