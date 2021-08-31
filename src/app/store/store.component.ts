@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { AppService } from '../app.service';
 import { IUser } from '../auth/auth.interfaces';
 import { AuthService } from '../auth/auth.service';
 import { DeleteDialogComponent, IDeleteDialogData } from '../delete-dialog/delete-dialog.component';
@@ -24,7 +25,8 @@ export class StoreComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private storeService: StoreService,
     public dialog: MatDialog,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private appService: AppService
   ) { }
 
   ngOnInit(): void {
@@ -39,16 +41,20 @@ export class StoreComponent implements OnInit, OnDestroy {
   }
 
   getStoreByStoreId() {
+    this.appService.spin$.next(true);
     const sub: Subscription = this.storeService.getStoreByStoreId(Number(this.route.snapshot.params.storeId))
       .subscribe((store: IStore) => {
+        this.appService.spin$.next(false);
         this.handleStoreRes(store);
       });
     this.subscriptions.push(sub);
   }
 
   getStoreByStoreOwner() {
+    this.appService.spin$.next(true);
     const sub: Subscription = this.storeService.getStoreByStoreOwner()
       .subscribe((store: IStore) => {
+        this.appService.spin$.next(false);
         this.handleStoreRes(store);
       });
     this.subscriptions.push(sub);
@@ -62,8 +68,10 @@ export class StoreComponent implements OnInit, OnDestroy {
   }
 
   getProducts() {
+    this.appService.spin$.next(true);
     const sub: Subscription = this.storeService.getProductsByStoreId(this.store.storeId)
       .subscribe((products: IProduct[]) => {
+        this.appService.spin$.next(false);
         if (products) {
           this.products = products;
         }
@@ -111,8 +119,10 @@ export class StoreComponent implements OnInit, OnDestroy {
   }
 
   createProduct(productData: IProduct) {
+    this.appService.spin$.next(true);
     const sub: Subscription = this.storeService.createProduct(productData)
       .subscribe(result => {
+        this.appService.spin$.next(false);
         if (result) {
           this.getProducts();
         }
@@ -121,8 +131,10 @@ export class StoreComponent implements OnInit, OnDestroy {
   }
 
   editProduct(productData: IProduct) {
+    this.appService.spin$.next(true);
     const sub: Subscription = this.storeService.editProduct(productData)
       .subscribe(result => {
+        this.appService.spin$.next(false);
         if (result) {
           this.getProducts();
         }
@@ -131,8 +143,10 @@ export class StoreComponent implements OnInit, OnDestroy {
   }
 
   deleteProduct(productId: number) {
+    this.appService.spin$.next(true);
     const sub: Subscription = this.storeService.deleteProduct(productId)
       .subscribe(result => {
+        this.appService.spin$.next(false);
         if (result) {
           this.getProducts();
         }

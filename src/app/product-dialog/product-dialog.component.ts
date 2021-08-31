@@ -1,6 +1,8 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Subscription } from 'rxjs';
+import { AppService } from '../app.service';
 import { ICategory, IProduct, IStore } from '../store/store.interfaces';
 import { StoreService } from '../store/store.service';
 
@@ -22,11 +24,13 @@ export class ProductDialogComponent implements OnInit, OnDestroy {
   DESCRIPTION_MAX_LENGTH = 1000;
   form: FormGroup;
   categoryList: ICategory[];
+  subscriptions: Subscription[];
 
   constructor(
     public dialogRef: MatDialogRef<ProductDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: IProductDialogData,
-    private storeService: StoreService
+    private storeService: StoreService,
+    private appService: AppService
   ) { }
 
   ngOnInit() {
@@ -36,10 +40,17 @@ export class ProductDialogComponent implements OnInit, OnDestroy {
       this.setFormValues();
     }
 
-    this.storeService.getAllCategories()
+    this.getAllCategories();
+  }
+
+  getAllCategories() {
+    this.appService.spin$.next(true);
+    const sub: Subscription = this.storeService.getAllCategories()
       .subscribe((allCategories: ICategory[]) => {
+        this.appService.spin$.next(false);
         this.categoryList = allCategories;
       });
+    this.subscriptions.push(sub);
   }
 
   initializeForm() {
@@ -86,19 +97,19 @@ export class ProductDialogComponent implements OnInit, OnDestroy {
     }
     if (this.data.dialogType === 'Create' ||
       this.form.controls['name'].value.trim() !== this.data.product.name) {
-        productData.name = this.form.controls['name'].value.trim();
+      productData.name = this.form.controls['name'].value.trim();
     }
     if (this.data.dialogType === 'Create' ||
       this.form.controls['category'].value !== this.data.product.category) {
-        productData.category = this.form.controls['category'].value;
+      productData.category = this.form.controls['category'].value;
     }
     if (this.data.dialogType === 'Create' ||
       this.form.controls['availableQuantity'].value !== this.data.product.availableQuantity) {
-        productData.availableQuantity = this.form.controls['availableQuantity'].value;
+      productData.availableQuantity = this.form.controls['availableQuantity'].value;
     }
     if (this.data.dialogType === 'Create' ||
       this.form.controls['description'].value.trim() !== this.data.product.description) {
-        productData.description = this.form.controls['description'].value.trim();
+      productData.description = this.form.controls['description'].value.trim();
     }
     if (this.data.dialogType === 'Create') {
       productData.storeId = this.data.store.storeId;
@@ -114,7 +125,9 @@ export class ProductDialogComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.onClickClose();
+    this.subscriptions.forEach((sub: Subscription) => {
+      sub.unsubscribe();
+    });
   }
 
 }

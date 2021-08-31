@@ -42,8 +42,14 @@ export class StoreDialogComponent implements OnInit, OnDestroy {
       this.setFormValues();
     }
 
+    this.getAllUsers();
+  }
+
+  getAllUsers() {
+    this.appService.spin$.next(true);
     const sub: Subscription = this.storeService.getAllUsers()
       .subscribe((allUsers: IUser[]) => {
+        this.appService.spin$.next(false);
         if (this.data.dialogType === 'Create') {
           this.storeOwnerList = allUsers.filter(user => !user.storeId && !user.storeRequestId);
         } else if (this.data.dialogType === 'Edit') {

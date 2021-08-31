@@ -16,6 +16,8 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { OverlayModule } from '@angular/cdk/overlay';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HeaderComponent } from './header/header.component';
 import { SignupComponent } from './signup/signup.component';
@@ -80,6 +82,8 @@ import { RejectDialogComponent } from './reject-dialog/reject-dialog.component';
     MatTableModule,
     MatIconModule,
     MatTooltipModule,
+    MatProgressSpinnerModule,
+    OverlayModule,
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule

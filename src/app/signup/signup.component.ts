@@ -56,8 +56,10 @@ export class SignupComponent implements OnInit, OnDestroy {
         password: this.form.controls.password.value,
         confirmPassword: this.form.controls.confirmPassword.value
       };
+      this.appService.spin$.next(true);
       this.signupSubscription = this.authService.signup(signupData)
         .subscribe((user: IUser) => {
+          this.appService.spin$.next(false);
           this.handleSignupSuccess(user);
         });
     }

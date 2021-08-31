@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
+import { AppService } from '../app.service';
 import { IUser } from '../auth/auth.interfaces';
 import { AuthService } from '../auth/auth.service';
 import { DeleteDialogComponent, IDeleteDialogData } from '../delete-dialog/delete-dialog.component';
@@ -21,8 +22,9 @@ export class HomeComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private storeService: StoreService,
-    public dialog: MatDialog
-  ) { }
+    public dialog: MatDialog,
+    private appService: AppService
+  ) {}
 
   ngOnInit() {
     this.loggedInUser = this.authService.getLoggedInUser();
@@ -31,8 +33,10 @@ export class HomeComponent implements OnInit {
   }
 
   getStoreByStoreOwner() {
+    this.appService.spin$.next(true);
     const sub: Subscription = this.storeService.getStoreByStoreOwner()
       .subscribe((store: IStore) => {
+        this.appService.spin$.next(false);
         if (store) {
           this.store = store;
         }
@@ -80,8 +84,10 @@ export class HomeComponent implements OnInit {
   }
 
   createStore(storeData: IStore) {
+    this.appService.spin$.next(true);
     const sub: Subscription = this.storeService.createStore(storeData)
       .subscribe(result => {
+        this.appService.spin$.next(false);
         if (result) {
           this.getStoreByStoreOwner();
         }
@@ -90,8 +96,10 @@ export class HomeComponent implements OnInit {
   }
 
   editStore(storeData: IStore) {
+    this.appService.spin$.next(true);
     const sub: Subscription = this.storeService.editStore(storeData)
       .subscribe(result => {
+        this.appService.spin$.next(false);
         if (result) {
           this.getStoreByStoreOwner();
         }
@@ -100,8 +108,10 @@ export class HomeComponent implements OnInit {
   }
 
   deleteStore() {
+    this.appService.spin$.next(true);
     const sub: Subscription = this.storeService.deleteStore(this.store.storeId)
       .subscribe(result => {
+        this.appService.spin$.next(false);
         if (result) {
           this.getStoreByStoreOwner();
         }

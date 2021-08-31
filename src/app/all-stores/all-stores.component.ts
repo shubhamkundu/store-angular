@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
+import { AppService } from '../app.service';
 import { IUser } from '../auth/auth.interfaces';
 import { AuthService } from '../auth/auth.service';
 import { DeleteDialogComponent, IDeleteDialogData } from '../delete-dialog/delete-dialog.component';
@@ -21,7 +22,8 @@ export class AllStoresComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private storeService: StoreService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private appService: AppService
   ) { }
 
   ngOnInit(): void {
@@ -32,8 +34,10 @@ export class AllStoresComponent implements OnInit {
   }
 
   getAllStores() {
+    this.appService.spin$.next(true);
     const sub: Subscription = this.storeService.getAllStores()
       .subscribe((allStores: IStore[]) => {
+        this.appService.spin$.next(false);
         this.handleAllStoresRes(allStores);
       });
     this.subscriptions.push(sub);
@@ -86,8 +90,10 @@ export class AllStoresComponent implements OnInit {
   }
 
   createStore(storeData: IStore) {
+    this.appService.spin$.next(true);
     const sub: Subscription = this.storeService.createStore(storeData)
       .subscribe(result => {
+        this.appService.spin$.next(false);
         if (result) {
           this.getAllStores();
         }
@@ -96,8 +102,10 @@ export class AllStoresComponent implements OnInit {
   }
 
   editStore(storeData: IStore) {
+    this.appService.spin$.next(true);
     const sub: Subscription = this.storeService.editStore(storeData)
       .subscribe(result => {
+        this.appService.spin$.next(false);
         if (result) {
           this.getAllStores();
         }
@@ -106,8 +114,10 @@ export class AllStoresComponent implements OnInit {
   }
 
   deleteStore(storeId: number) {
+    this.appService.spin$.next(true);
     const sub: Subscription = this.storeService.deleteStore(storeId)
       .subscribe(result => {
+        this.appService.spin$.next(false);
         if (result) {
           this.getAllStores();
         }
@@ -120,12 +130,15 @@ export class AllStoresComponent implements OnInit {
   }
 
   getStoreOwners() {
-    this.storeService.getAllUsersHavingStore()
+    this.appService.spin$.next(true);
+    const sub: Subscription = this.storeService.getAllUsersHavingStore()
       .subscribe((allUsers: IUser[]) => {
+        this.appService.spin$.next(false);
         this.stores.forEach((store: IStore) => {
           store.storeOwner = allUsers.find(u => u.userId === store.storeOwnerId);
         });
       });
+    this.subscriptions.push(sub);
   }
 
   ngOnDestroy() {

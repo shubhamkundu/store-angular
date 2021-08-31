@@ -42,8 +42,10 @@ export class LoginComponent implements OnInit, OnDestroy {
         email: this.form.controls.email.value.trim(),
         password: this.form.controls.password.value
       };
+      this.appService.spin$.next(true);
       this.loginSubscription = this.authService.login(loginData)
         .subscribe((loginRes: ILoginResponse) => {
+          this.appService.spin$.next(false);
           this.handleLoginSuccess(loginRes);
         });
     }
