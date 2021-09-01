@@ -34,8 +34,8 @@ export class ProductDialogComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+    this.subscriptions = [];
     this.initializeForm();
-
     if (this.data.dialogType === 'Edit') {
       this.setFormValues();
     }
