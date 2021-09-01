@@ -11,6 +11,7 @@ import { SignupComponent } from './signup/signup.component';
 import { StoreComponent } from './store/store.component';
 import { AllRequestsComponent } from './all-requests/all-requests.component';
 import { MyRequestsComponent } from './my-requests/my-requests.component';
+import { AllUsersComponent } from './all-users/all-users.component';
 
 const routes: Routes = [
   {
@@ -57,6 +58,11 @@ const routes: Routes = [
     path: 'my-requests',
     component: MyRequestsComponent,
     canActivate: [AuthGuard]
+  },
+  {
+    path: 'all-users',
+    component: AllUsersComponent,
+    canActivate: [AdminGuard]
   }
 ];
 

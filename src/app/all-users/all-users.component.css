@@ -1,0 +1,21 @@
+.all-users-card {
+  width: 100%;
+  margin-top: 15px;
+  margin-bottom: 25px;
+  position: relative;
+}
+
+.all-users-card>mat-card-content {
+  height: 470px;
+  overflow-y: scroll;
+}
+
+/* .all-users-card>mat-card-actions {
+  bottom: 0;
+  margin-left: 17px;
+  margin-bottom: 5px;
+}
+
+.all-users-card>mat-card-actions button {
+  margin-right: 15px;
+} */

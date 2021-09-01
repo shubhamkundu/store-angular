@@ -37,6 +37,11 @@
             <a class="nav-link active" aria-current="page" href="/all-requests">All Requests</a>
           </button>
         </li>
+        <li *ngIf="isAuthenticated() && isAdmin()" class="nav-item">
+          <button class="btn btn-sm btn-secondary" type="button">
+            <a class="nav-link active" aria-current="page" href="/all-users">All Users</a>
+          </button>
+        </li>
         <li *ngIf="isAuthenticated()" class="nav-item">
           <button class="btn btn-sm btn-outline-secondary" type="button">
             <a class="nav-link active" aria-current="page" href="/logout">Logout</a>

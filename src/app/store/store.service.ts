@@ -56,6 +56,20 @@ export class StoreService {
       );
   }
 
+  changeUserRole(userUpdateBody: IUser): Observable<IUser> {
+    return this.http.patch<IUser>(`${this.msURL}/user/user-role`, userUpdateBody)
+      .pipe(
+        catchError(this.handleError('changeUserRole', null as IUser))
+      );
+  }
+
+  deleteUser(userId: number): Observable<IUser> {
+    return this.http.delete<IUser>(`${this.msURL}/user?userId=${userId}`)
+      .pipe(
+        catchError(this.handleError('deleteUser', null as IUser))
+      );
+  }
+
   createStore(storeData: IStore): Observable<IStore> {
     return this.http.post<IStore>(`${this.msURL}/store/`, storeData)
       .pipe(

@@ -1,0 +1,65 @@
+<table mat-table [dataSource]="users" class="user-table small" matSort matSortActive="joinedOn" matSortDisableClear
+    matSortDirection="asc">
+
+    <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Name</th>
+        <td mat-cell *matCellDef="let user">{{user.name}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef>Email</th>
+        <td mat-cell *matCellDef="let user">{{user.email}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="userRole">
+        <th mat-header-cell *matHeaderCellDef>User Role</th>
+        <td mat-cell *matCellDef="let user" class="user-role-td">
+            <mat-form-field *ngIf="!!loggedInUser && user.userId !== loggedInUser.userId">
+                <mat-select [(value)]="user.userRole" name="userRole" (selectionChange)="onChangeUserRole(user)">
+                    <mat-option *ngFor="let userRoleObj of USER_ROLES" [value]="userRoleObj.userRole">
+                        {{userRoleObj.displayValue}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <span
+                *ngIf="!!loggedInUser && user.userId === loggedInUser.userId">{{getUserRoleDisplayValue(user.userRole)}}</span>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="joinedOn">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>
+            Joined On
+        </th>
+        <td mat-cell *matCellDef="let user">{{user.createdOn | date}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="store">
+        <th mat-header-cell *matHeaderCellDef>Store</th>
+        <td mat-cell *matCellDef="let user">
+            <button *ngIf="!!user.storeId" class="btn btn-sm btn-primary action-button" matTooltip="View Store">
+                <a href="/store/{{user.storeId}}" class="text-reset text-decoration-none">
+                    <mat-icon aria-hidden="false" aria-label="View">visibility</mat-icon>
+                </a>
+            </button>
+            <button *ngIf="!user.storeId" class="btn btn-sm btn-primary action-button" matTooltip="Create Store"
+                (click)="onCreateStore(user)">
+                <mat-icon aria-hidden="false" aria-label="Create">add</mat-icon>
+            </button>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>
+            Actions
+        </th>
+        <td mat-cell *matCellDef="let user">
+            <button *ngIf="!!loggedInUser && user.userId !== loggedInUser.userId"
+                class="btn btn-sm btn-danger action-button" matTooltip="Delete" (click)="onClickDelete(user)">
+                <mat-icon aria-hidden="false" aria-label="Delete">delete</mat-icon>
+            </button>
+        </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let user; columns: displayedColumns;"></tr>
+</table>

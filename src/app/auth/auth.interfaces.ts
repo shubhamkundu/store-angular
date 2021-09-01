@@ -6,9 +6,9 @@ export interface ISignupData {
 }
 
 export interface IUser {
-    userId: number;
-    name: string;
-    email: string;
+    userId?: number;
+    name?: string;
+    email?: string;
     userRole?: string;
     storeId?: number;
     storeRequestId?: number;

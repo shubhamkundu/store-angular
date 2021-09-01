@@ -41,6 +41,8 @@ import { StoreRequestDialogComponent } from './store-request-dialog/store-reques
 import { RequestTableComponent } from './request-table/request-table.component';
 import { ApproveDialogComponent } from './approve-dialog/approve-dialog.component';
 import { RejectDialogComponent } from './reject-dialog/reject-dialog.component';
+import { AllUsersComponent } from './all-users/all-users.component';
+import { UserTableComponent } from './user-table/user-table.component';
 
 @NgModule({
   declarations: [
@@ -66,7 +68,9 @@ import { RejectDialogComponent } from './reject-dialog/reject-dialog.component';
     StoreRequestDialogComponent,
     RequestTableComponent,
     ApproveDialogComponent,
-    RejectDialogComponent
+    RejectDialogComponent,
+    AllUsersComponent,
+    UserTableComponent
   ],
   imports: [
     BrowserModule,
